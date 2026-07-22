@@ -1,30 +1,27 @@
 # canipypi
 
-A modern Python package scaffolded by **fastship**.
+Check whether PyPI will accept a project name.
 
-## Development
+## Usage
 
-```bash
-pip install -e .[dev]
+```console
+$ canipypi unicodemath requests
+unicodemath: appears available
+requests: conflicts with existing project 'requests'
 ```
 
-## Versioning
+Several names are checked with a single download of the PyPI index. The command exits with status 0 when every name appears available, 1 when a public PyPI rule rejects any of them, and 2 when PyPI cannot be queried.
 
-Version lives in `canipypi/__init__.py` as `__version__`.
-Bump it with:
+`pypi_names` caches its download for the life of the process, so repeated `check_name` calls share one fetch of the PyPI index; an explicit project-name collection can also be passed:
 
-```bash
-ship-bump --part 2   # patch
-ship-bump --part 1   # minor
-ship-bump --part 0   # major
+```python
+from canipypi import check_name, pypi_names
+
+projects = pypi_names()
+result = check_name('unicodemath', projects)
+result.available
 ```
 
-## Release
+`canipypi` checks project-name syntax, conflicts with Python standard-library modules, standard PyPI name normalization, and Warehouse's stricter similarity normalization.
 
-1) Ensure your GitHub issues are labeled (`bug`, `enhancement`, `breaking`).
-2) Run:
-
-```bash
-ship-gh
-ship-pypi
-```
+PyPI's explicit prohibited-name list is private. An available result is therefore not a guarantee, and another user may register the name before you do.

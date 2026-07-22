@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "canipypi"
 dynamic = ["version"]
-description = "A Python package"
+description = "Check whether PyPI will accept a project name."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "Apache-2.0" }
@@ -15,11 +15,19 @@ classifiers = [
   "Programming Language :: Python :: 3 :: Only",
 ]
 
-dependencies = []
+dependencies = [
+  "httpx",
+  "packaging",
+  "stdlib-list",
+]
+
+[project.scripts]
+canipypi = "canipypi:main"
 
 [project.optional-dependencies]
 dev = [
   "fastship",
+  "pytest",
   "build",
   "twine",
 ]
