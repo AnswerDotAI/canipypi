@@ -28,7 +28,7 @@ PyPI's explicit prohibited-name list is private. An available result is therefor
 
 ## Release management
 
-`release_sizes` returns each release's uploaded bytes. `delete_release` and `prune_releases` use a `fastcdp` Page attached to a signed-in PyPI tab. Cookies and CSRF tokens stay in the browser. Deletion is permanent, and deleted filenames cannot be uploaded again.
+`release_sizes` returns uploaded bytes per release from PyPI's cached public JSON. `delete_release` and `prune_releases` use a `fastcdp` Page attached to a signed-in PyPI tab. Cookies and CSRF tokens stay in the browser. Deletion is permanent, and deleted filenames cannot be uploaded again.
 
 ```python
 from canipypi.manage import release_sizes, delete_release, prune_releases
@@ -39,4 +39,4 @@ await delete_release(page, 'my-project', '0.1.0')
 await prune_releases(page, 'my-project', keep=5)
 ```
 
-Pruning deletes older versions in version order, retaining the newest five by default. It stops on the first failed deletion. The page must be signed into PyPI with permission to manage the project.
+Pruning uses the current authenticated management list and deletes older versions in version order, retaining the newest five by default. It stops on the first failed deletion. The page must be signed into PyPI with permission to manage the project.
